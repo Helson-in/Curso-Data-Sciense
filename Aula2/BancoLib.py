@@ -54,7 +54,6 @@ print("3 - Depositar: ")
 print("4 - Sacar: ")
 
 
-
 escolha = int(input("Digite a opção desejada: "))
 
 while escolha > 0:
