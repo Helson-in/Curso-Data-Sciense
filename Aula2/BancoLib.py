@@ -40,7 +40,10 @@ class Banco():
     def sacar(self, num_conta, valor):
         for conta in self.contas:
             if(conta.numero == num_conta):
-                conta.saque(valor)
+                if conta.saldo >= valor:
+                    conta.saque(valor)
+                else:
+                    return -1
         
 print("Bem-vindo!")
 
@@ -69,7 +72,6 @@ while escolha > 0:
         num_conta = (int(input("Digite o número da conta: ")))
         valor = (float(input("Digite o valor a ser depositado: ")))
         deposito = bancoUfrpe.depositar(num_conta, valor)
-        print("Saldo: {}".format(saldo))
         print("Valor Depositado com Sucesso!")
     elif escolha == 4:
         num_conta = (int(input("Digite o número da conta: ")))
