@@ -12,6 +12,8 @@ print("3 - Depositar: ")
 print("4 - Sacar: ")
 print("5 - Render Poupança: ")
 print("6 - Render Bonûs: ")
+print("7 - Consultar Bonûs: ")
+
 
 
 escolha = int(input("\nDigite a opção desejada: "))
@@ -72,7 +74,13 @@ while escolha > 0:
         if resposta:
             print("Bonûs adicionado a conta")
         else:
-            print("A conta inválida")
+            print("Conta inválida")
+    
+    elif escolha == 7:
+        # Consultar bônus
+        num_conta = (int(input("Digite o número da conta: ")))
+        bonus = bancoUfrpe.bonus_conta(num_conta)
+        print("Bônus em conta: {}".format(bonus))
 
     escolha = int(input("\nDigite a opção desejada: "))
         

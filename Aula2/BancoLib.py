@@ -38,6 +38,7 @@ class ContaBonificada(Conta):
         
     def getBonus(self):
         return self.bonus
+    
 class Banco():
     def __init__(self, nome_banco):
         self.nome = nome_banco
@@ -77,6 +78,7 @@ class Banco():
         for conta in self.contas:
             if(conta.numero == num_conta):
                 conta.deposit(valor)
+        return -1
                 
     def sacar(self, num_conta, valor):
         for conta in self.contas:
@@ -96,3 +98,9 @@ class Banco():
                 conta.render_bonus()
                 return True
         return False
+    
+    def bonus_conta(self, num_conta):
+        for conta in self.contas:
+            if(conta.numero) == num_conta and isinstance(conta, ContaBonificada):
+                return conta.getBonus()
+        return 0
