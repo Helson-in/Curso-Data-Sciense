@@ -4,13 +4,34 @@ class Conta():
     def __init__(self, num_conta):
         self.numero = num_conta
         self.saldo = 0
+        self.bonus = 0
     
     def deposit(self, valor):
-        self.saldo = self.saldo + valor    
+        self.saldo = self.saldo + valor  - (valor * 0.001)
     
     def saque(self, valor):
-        self.saldo = self.saldo - valor    
+        if self.saldo >= valor:
+            self.saldo = self.saldo - valor
+            return True
+        else:
+            return False
+class Poupanca(Conta):
+    def __init__(self, num_conta, percentual):
+        self.percentual = percentual
+        super().__init__(num_conta)
+    
+    def render(self):
+        self.saldo = self.saldo + self.saldo * (0.01 * self.percentual)
         
+        
+class ContaBonificada(Conta):
+    def deposit(self, valor):
+        Conta.deposit(valor)
+        self.bonus = self.bonus +  (valor * 0.0001)
+        
+    def render_bonus(self):
+        self.saldo = self.saldo + self.bonus
+        self.bonus = 0
 class Banco():
     def __init__(self, nome_banco):
         self.nome = nome_banco
@@ -24,6 +45,15 @@ class Banco():
         c = Conta(num)
         self.contas.append(c)
         self.saldo = 0
+        self.bonus = 0
+        return num
+    
+    def criar_poupanca(self, percentual):
+        num = random.randint(0, 1000)
+        p = Poupanca(num, percentual)
+        self.contas.append(p)
+        self.saldo = 0
+        self.bonys = 0
         return num
     
     def consulta_saldo(self, num_conta):
@@ -33,51 +63,27 @@ class Banco():
         return -1
     
     def depositar(self, num_conta, valor):
+        b = ContaBonificada(num_conta)
+        self.contas.append(b)
         for conta in self.contas:
             if(conta.numero == num_conta):
-                conta.deposit(valor)
+                b.deposit(valor)
                 
     def sacar(self, num_conta, valor):
         for conta in self.contas:
             if(conta.numero == num_conta):
-                if conta.saldo >= valor:
-                    conta.saque(valor)
-                else:
-                    return -1
-        
-print("Bem-vindo!")
+                return conta.saque(valor)
+    
+    def render_poupanca(self, num_conta):
+        for conta in self.contas:
+            if(conta.numero) == num_conta and isinstance(conta, Poupanca):
+                conta.render()
+                return True
+        return False
 
-bancoUfrpe = Banco("UABJ")
-print("Menu")
-
-print("0 - Sair: ")
-print("1 - Criar uma nova conta: ")
-print("2 - Consultar o saldo: ")
-print("3 - Depositar: ")
-print("4 - Sacar: ")
-
-
-escolha = int(input("Digite a opção desejada: "))
-
-while escolha > 0:
-    if escolha == 1:
-        # Criar uma conta
-        num_conta = bancoUfrpe.criar_conta()
-        print("Conta criada: {}".format(num_conta))
-    elif escolha == 2:
-        num_conta = (int(input("Digite o número da conta: ")))
-        saldo = bancoUfrpe.consulta_saldo(num_conta)
-        print("Saldo: {}".format(saldo))
-    elif escolha == 3:
-        num_conta = (int(input("Digite o número da conta: ")))
-        valor = (float(input("Digite o valor a ser depositado: ")))
-        deposito = bancoUfrpe.depositar(num_conta, valor)
-        print("Valor Depositado com Sucesso!")
-    elif escolha == 4:
-        num_conta = (int(input("Digite o número da conta: ")))
-        valor = (float(input("Digite o valor a ser sacado: ")))
-        saque = bancoUfrpe.sacar(num_conta, valor)
-        print("Valor Sacado com Sucesso!")
-        
-    escolha = int(input("Digite a opção desejada: "))
-        
+    def render_bonus(self, num_conta):
+        for conta in self.contas:
+            if(conta.numero) == num_conta and isinstance(conta, ContaBonificada):
+                conta.render_bonus()
+                return True
+        return False
