@@ -53,7 +53,7 @@ class Banco():
         p = Poupanca(num, percentual)
         self.contas.append(p)
         self.saldo = 0
-        self.bonys = 0
+        self.bonus = 0
         return num
     
     def consulta_saldo(self, num_conta):
