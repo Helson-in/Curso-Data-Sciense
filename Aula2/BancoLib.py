@@ -29,12 +29,15 @@ class ContaBonificada(Conta):
         self.bonus = 0
         
     def deposit(self, valor):
-        self.bonus += valor*0.0001
         super().deposit(valor)
+        self.bonus = self.bonus + (valor * 0.0001)
 
     def render_bonus(self):
         self.saldo = self.saldo + self.bonus
         self.bonus = 0
+        
+    def getBonus(self):
+        return self.bonus
 class Banco():
     def __init__(self, nome_banco):
         self.nome = nome_banco
