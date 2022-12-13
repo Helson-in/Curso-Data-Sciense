@@ -19,15 +19,17 @@ escolha = int(input("\nDigite a opção desejada: "))
 while escolha > 0:
     if escolha == 1:
         # Criar uma conta
-        print("1 - Conta Corrente\n2 - Conta Poupança")
+        print("1 - Conta Corrente\n2 - Conta Poupança\n3 - Conta Bonificada")
         tipo_conta = int(input("Digite o tipo da conta: "))
         # Criando a conta de acordo com a escolha do usuário
         if tipo_conta == 1:
             num_conta = bancoUfrpe.criar_conta()
-        else:
+        elif tipo_conta == 2:
             percentual_poupanca = float(input("Digite o percentual da conta: "))
             num_conta = bancoUfrpe.criar_poupanca(percentual_poupanca)
-            
+        else:
+            num_conta = bancoUfrpe.criar_conta_bonificada()
+        
         print("Conta criada: {}".format(num_conta))
         
     elif escolha == 2:

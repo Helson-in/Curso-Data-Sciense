@@ -4,7 +4,6 @@ class Conta():
     def __init__(self, num_conta):
         self.numero = num_conta
         self.saldo = 0
-        self.bonus = 0
     
     def deposit(self, valor):
         self.saldo = self.saldo + valor  - (valor * 0.001)
@@ -25,10 +24,14 @@ class Poupanca(Conta):
         
         
 class ContaBonificada(Conta):
-    def deposit(self, valor):
-        Conta.deposit(valor)
-        self.bonus = self.bonus +  (valor * 0.0001)
+    def __init__(self, num_conta):
+        super().__init__(num_conta)
+        self.bonus = 0
         
+    def deposit(self, valor):
+        self.bonus += valor*0.0001
+        super().deposit(valor)
+
     def render_bonus(self):
         self.saldo = self.saldo + self.bonus
         self.bonus = 0
@@ -42,18 +45,23 @@ class Banco():
         
     def criar_conta(self):
         num = random.randint(0, 1000)
-        c = Conta(num)
-        self.contas.append(c)
+        conta_corrente = Conta(num)
+        self.contas.append(conta_corrente)
         self.saldo = 0
-        self.bonus = 0
         return num
     
     def criar_poupanca(self, percentual):
         num = random.randint(0, 1000)
-        p = Poupanca(num, percentual)
-        self.contas.append(p)
+        conta_poupanca = Poupanca(num, percentual)
+        self.contas.append(conta_poupanca)
         self.saldo = 0
-        self.bonys = 0
+        return num
+    
+    def criar_conta_bonificada(self):
+        num = random.randint(0, 1000)
+        conta_bonificada = ContaBonificada(num)
+        self.contas.append(conta_bonificada)
+        self.saldo = 0
         return num
     
     def consulta_saldo(self, num_conta):
@@ -63,11 +71,9 @@ class Banco():
         return -1
     
     def depositar(self, num_conta, valor):
-        b = ContaBonificada(num_conta)
-        self.contas.append(b)
         for conta in self.contas:
             if(conta.numero == num_conta):
-                b.deposit(valor)
+                conta.deposit(valor)
                 
     def sacar(self, num_conta, valor):
         for conta in self.contas:
